@@ -1,0 +1,16 @@
+UG02 DSS 02 Coursework
+
+Rho: working on input validation for login, sign up, blog posts etc
+Nik: working on authentication for login, sign up, payments
+Jay: working on database encryption
+Riley: working on <insert whatever you want to work on here :)>
+
+To Run:
+- Download the front end from BlackBoard.
+- Extract and locate the node_modules bit
+- Put into local folder and link to this GitHub
+- Pull
+- Run index.html to see webpage
+- It's crap at the minute, but all is well, we shall fix this
+
+Last Update: 4th March 2026, by Rho
