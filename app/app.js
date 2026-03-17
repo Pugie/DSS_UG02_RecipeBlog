@@ -164,8 +164,9 @@ app.listen(port, () => {
 function sanitiseInputs(inputs) {
     //uses regex to remove all instances of "bad" inputs
     //such as html tags and other key words
-    //the < is a placeholder, I will develop a refined regex later
-    const badInputs = "<";
+    //the regex expression will probably grow overtime
+
+    const badInputs = "<[^>]*>"; //regex currently removes all html tags
     inputs = inputs.replace(new RegExp(badInputs, 'g'), "");
     
     return inputs;
