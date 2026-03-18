@@ -27,3 +27,9 @@ ISSUES TO FIX:
 - before i sanitise the username&password, ensure there's a failsafe so people can't set bad credentials
 - literally everything is stored in plaintext 
 
+STUFF TO CONSIDER:
+- Users can make recipes and share them
+- Users can comment on recipes, like/dislike
+- "Trending" recipes will show on the main page
+- Users can buyset recipes from the site (?)
+

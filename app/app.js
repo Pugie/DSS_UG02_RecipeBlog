@@ -138,8 +138,8 @@ app.post('/makepost', function(req, res) {
     
     fs.writeFileSync(__dirname + '/public/json/posts.json', JSON.stringify(posts));
 
-    // Redirect back to my_posts.html
-    res.sendFile(__dirname + "/public/html/my_posts.html");
+    // Redirect back to my_recipes.html
+    res.sendFile(__dirname + "/public/html/my_recipes.html");
  });
 
  // Delete a post POST request
@@ -156,7 +156,7 @@ app.post('/makepost', function(req, res) {
     // Update posts.json
     fs.writeFileSync(__dirname + '/public/json/posts.json', JSON.stringify(posts));
 
-    res.sendFile(__dirname + "/public/html/my_posts.html");
+    res.sendFile(__dirname + "/public/html/my_recipes.html");
  });
 
 app.listen(port, () => {
