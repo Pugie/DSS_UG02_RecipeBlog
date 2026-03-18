@@ -13,10 +13,7 @@ Riley: working on <insert whatever you want to work on here :)>
 Everyone: test test test. Write Unit Testing for your sections, comment nicely so we all know what that does. If you use libraries, perhaps add a brief comment on what it does and how it works
 
 To Run:
-- Download the front end from BlackBoard.
-- Extract and locate the node_modules bit
-- Put into local folder and link to this GitHub
-- Pull
+- Pull into new folder
 - Navigate to app folder in terminal
 - npm install to install all modules
 - that should install everything but if not, try installing mocha and chai as well
