@@ -62,7 +62,8 @@ async function loadPosts() {
         let fullRecipeButton = document.createElement('button');
         fullRecipeButton.id = "fullrecipe";
         fullRecipeButton.textContent = "View Full Recipe";
-        fullRecipeButton.addEventListener("click", openRecipe);
+
+        fullRecipeButton.addEventListener("click", () => openRecipe(postId));
         figcap.appendChild(fullRecipeButton);
 
         postList.insertBefore(postContainer, document.querySelectorAll("article")[0]);
@@ -70,8 +71,11 @@ async function loadPosts() {
 }
 
 
-function openRecipe(){
-    alert("Hi");
+function openRecipe(postID){
+    alert("Post Selected:" + postID);
+    window.location.href = "fullrecipe.html";
+
+
 }
 
 loadPosts();
