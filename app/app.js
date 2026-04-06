@@ -52,9 +52,7 @@ app.post('/', async function(req, res) {
             if (err) console.log(err);
         });
     } else {
-        res.sendFile(__dirname + '/public/html/login.html', (err) => {
-            if (err) console.log(err);
-        });
+        res.redirect('/?error=1');
     }
 });
 
