@@ -10,7 +10,7 @@ var bodyParser = require('body-parser');
 const fs = require('fs');
 
 //require the database
-const pool = require('./db')
+//const pool = require('./db')
 
 app.use(express.static(__dirname + '/public'));
 
