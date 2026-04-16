@@ -15,7 +15,7 @@
     "psql": "^0.0.1"
   },
   "scripts": {
-  "start": "node app.js",
-  "dev": "nodemon app.js"
+  "start": "node app/app.js",
+  "dev": "nodemon app/app.js"
 }
 }
