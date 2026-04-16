@@ -6,7 +6,7 @@ const port = 3000;
 
 const bcrypt = require('bcrypt');
 
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const fs = require('fs');
 
 //require the database
