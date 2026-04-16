@@ -1,20 +1,21 @@
 {
   "devDependencies": {
-    "husky": "^9.1.7",
-    "nodemon": "^3.1.14",
     "chai": "^6.2.2",
-    "mocha": "^7.2.0"
+    "husky": "^9.1.7",
+    "mocha": "^7.2.0",
+    "nodemon": "^3.1.14",
+    "sequelize-cli": "^6.6.5"
   },
   "dependencies": {
-    "express": "^4.22.1",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.1",
+    "express": "^4.22.1",
     "express-promise-router": "^4.1.1",
     "pg": "^8.20.0"
   },
   "scripts": {
-  "start": "node app/app.js",
-  "dev": "nodemon --watch app --ext js,mjs,cjs --ignore app/public/json/*.json app/app.js"
-}
+    "start": "node app/app.js",
+    "dev": "nodemon --watch app --ext js,mjs,cjs --ignore app/public/json/*.json app/app.js"
+  }
 }
