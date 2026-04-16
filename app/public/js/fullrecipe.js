@@ -10,7 +10,6 @@ async function loadRecipe() {
     let postList = document.getElementById('postList');
     let commentList = document.getElementById('commentList');
 
-    let specificRecipeID = 17; //this is a placeholder
 
     for(let i = 0; i < postList.children.length; i++) {
         if(postList.children[i].nodeName == "article") {
@@ -29,7 +28,9 @@ async function loadRecipe() {
     let postTimestamp = post_data[specificRecipeID].timestamp;
     let postTitle = post_data[specificRecipeID].title;
     let postContent = post_data[specificRecipeID].content;
-    let postId = specificRecipeID;
+    //get the post ID from the url
+    let params = new URLSearchParams(window.location.search);
+    let postId = parseInt(params.get("postID"));
 
     let postComments = ["this recipe sucks!!", "i substitued everything for air and it came out wrong :(", "i can't eat food, can you make one with my substitutions?"] //replace this with actual comments when implemented
 
