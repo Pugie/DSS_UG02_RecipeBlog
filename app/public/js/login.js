@@ -1,21 +1,43 @@
-function showLoginError(message) {
-    const existing = document.getElementById("login_error");
-    if (existing) existing.remove();
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("login_form");
+    const messageElement = document.getElementById("message");
 
-    let error_msg = document.createElement("p");
-    error_msg.id = "login_error";
-    error_msg.textContent = message;
-    error_msg.classList.add("error");
-    document.querySelector("#login_btn").parentNode.insertBefore(error_msg, document.querySelector("#login_btn"));
-}
+    form.addEventListener("submit", async (evt) => {
+        // stop the page from reloading so that our auth logic can run
+        evt.preventDefault();
 
-const params = new URLSearchParams(window.location.search);
+        const email = document.getElementById("email_input").value.trim();
+        const password = document.getElementById("password_input").value;
 
-// brute force protection
-if (params.get("error") == "lockout") {
-    showLoginError("Too many failed login attempts. Please try again later.");
-}
-// ensuring that error message always says username OR password to prevent helping a hacker
-else if (params.get("error")) {
-    showLoginError("Incorrect username or password.");
-}
+        messageElement.textContent = "";
+
+        try {
+            const response = await fetch("/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
+
+            const data = await response.json();
+            if (!response.ok) {
+                messageElement.textContent = data.msg || "Login unsuccessful";
+                return;
+            }
+            
+            localStorage.setItem("token", data.user.token);
+            localStorage.setItem("userEmail", data.user.email);
+            localStorage.setItem("userName", data.user.username);
+
+            messageElement.textContent = "Login successful!";
+            window.location.href = "/html/index.html";
+        } catch (error) {
+            console.error(error);
+            messageElement.textContent("Something went wrong.")
+        }
+    });
+});

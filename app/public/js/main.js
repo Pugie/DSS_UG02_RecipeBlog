@@ -1,9 +1,42 @@
-// Function to add username in top right corner of every page after user has logged in
-async function displayUsername() {
-    const response = await fetch("../json/login_attempt.json");
-    const user_data = await response.json();
+document.addEventListener("DOMContentLoaded", () => {
+    const loginLink = document.querySelector("#login_link");
+    const logoutBtn = document.querySelector("#logout_btn");
 
-    document.querySelector("#login_link").textContent = user_data.username;
-}
+    const displayUsername = () => {
+        if (!loginLink) return;
 
-displayUsername();
+        const token = localStorage.getItem("token");
+        const username = localStorage.getItem("userName");
+
+        if (token && username) {
+            loginLink.textContent = `${username}`;
+            
+            if (logoutBtn) {
+                logoutBtn.style.display = "block";
+            }
+        } else {
+            loginLink.textContent = "Sign in.";
+
+            if (logoutBtn) {
+                logoutBtn.style.display = "none";
+            }
+
+            loginLink.addEventListener("click", () => {
+                window.location.href = "/html/login.html";
+            });
+        }
+    };
+    displayUsername();
+
+
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", (evt) => {
+            evt.preventDefault();
+
+            localStorage.clear()
+
+            window.location.href = "/html/login.html"
+        });
+    }
+});

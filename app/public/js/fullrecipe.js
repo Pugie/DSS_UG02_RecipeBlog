@@ -10,7 +10,6 @@ async function loadRecipe() {
     let postList = document.getElementById('postList');
     let commentList = document.getElementById('commentList');
 
-    let specificRecipeID = 17; //this is a placeholder
 
     for(let i = 0; i < postList.children.length; i++) {
         if(postList.children[i].nodeName == "article") {
@@ -24,12 +23,22 @@ async function loadRecipe() {
         }
     }
 
+    //get the post ID from the url
+    let params = new URLSearchParams(window.location.search);
+    let postId = parseInt(params.get("postID"));
+    let recipe = post_data.find(post => post.postId === postId); 
+
+    //check if recipe exists
+    if (!recipe) {
+        postList.textContent = "Recipe not found.";
+        return;
+    }
+
     //add the specific post
-    let postAuthor = post_data[specificRecipeID].username;
-    let postTimestamp = post_data[specificRecipeID].timestamp;
-    let postTitle = post_data[specificRecipeID].title;
-    let postContent = post_data[specificRecipeID].content;
-    let postId = specificRecipeID;
+    let postAuthor = recipe.username;
+    let postTimestamp = recipe.timestamp;
+    let postTitle = recipe.title;
+    let postContent = recipe.content;
 
     let postComments = ["this recipe sucks!!", "i substitued everything for air and it came out wrong :(", "i can't eat food, can you make one with my substitutions?"] //replace this with actual comments when implemented
 
@@ -43,7 +52,7 @@ async function loadRecipe() {
     let postIdContainer = document.createElement("p");
     postIdContainer.textContent = postId;
     postIdContainer.hidden = true;
-    postId.id = "postId";
+    postIdContainer.id = "postId";
     postContainer.appendChild(postIdContainer);
 
     let img = document.createElement('img');
@@ -84,13 +93,13 @@ async function loadRecipe() {
         let commentContent = postComments[i];
         let commentId = i;
 
-        let commentContainer = document.createElement('commentarticle');
+        let commentContainer = document.createElement('article');
         commentContainer.id = "existingcomment";
 
         let commentIdContainer = document.createElement("p");
         commentIdContainer.textContent = commentId;
         commentIdContainer.hidden = true;
-        commentId.id = "commentId";
+        commentIdContainer.id = "commentId";
         commentContainer.appendChild(commentIdContainer);
         
         let commenterContainer = document.createElement('h5');

@@ -1,17 +1,24 @@
 {
   "devDependencies": {
-    "express": "^4.22.1",
+    "chai": "^6.2.2",
     "husky": "^9.1.7",
+    "mocha": "^7.2.0",
     "nodemon": "^3.1.14"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "chai": "^6.2.2",
     "cors": "^2.8.6",
     "dotenv": "^17.4.1",
+    "express": "^4.22.1",
     "express-promise-router": "^4.1.1",
-    "mocha": "^7.2.0",
-    "pg": "^8.20.0",
-    "psql": "^0.0.1"
+    "express-validator": "^7.3.2",
+    "jsonwebtoken": "^9.0.3",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "pg": "^8.20.0"
+  },
+  "scripts": {
+    "start": "node app/app.js",
+    "dev": "nodemon --watch app --ext js,mjs,cjs --ignore app/public/json/*.json app/app.js"
   }
 }
