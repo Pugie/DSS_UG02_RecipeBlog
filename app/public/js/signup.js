@@ -38,12 +38,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             localStorage.setItem("token", data.user.token);
-            localStorage.setItem("userName", data.user.name);
+            localStorage.setItem("userName", data.user.username);
 
             messageElement.textContent = "User account successfully created!"
         } catch (error) {
             console.error(error);
-            messageElement.textContent = "Something went wrong";
+            messageElement.textContent = "Something went wrong.";
         }
     });
 });
