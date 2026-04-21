@@ -3,6 +3,7 @@ require("dotenv").config();
 const app = express();
 const fs = require('fs');
 const authRoutes = require("./routes/auth");
+const recipeRoutes = require("./routes/recipes");
 const passport = require("passport");
 require("./config/passport");
 
@@ -13,6 +14,8 @@ app.use(express.json());
 app.use(passport.initialize());
 
 app.use('/api', authRoutes);
+app.use("/api", recipeRoutes);
+
 // Landing page
 app.get('/', (req, res) => {
     /// send the static file
