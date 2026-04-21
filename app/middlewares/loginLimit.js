@@ -6,7 +6,12 @@ const rateLimiter = rateLimit({
     standardHeaders: true,
     legacyHeaders: false,
     statusCode: 429, // Too many requests sent
-    message: "You have sent too many requests at once! Please wait 5 minutes."
+    handler: (req, res) => {
+        res.status(429).json({
+            status: "error",
+            msg: "You have sent too many requests at once! Please wait 5 minutes."
+        });
+    }
 });
 
 module.exports = rateLimiter;
