@@ -44,9 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            messageElement.textCOntent = "Your recipe has been published :)";
+            messageElement.textContent = "Your recipe has been published :)";
             
-            form.requestFullscreen();
+            form.reset();
         } catch (error) {
             console.error(error);
             messageElement.textContent = "Something went wrong.";

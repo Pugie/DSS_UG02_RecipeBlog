@@ -14,7 +14,7 @@ require("dotenv").config();
 passport.use(new JwtStrategy(options, async (jwt_payload, done) => {
     try {
         const result = await pool.query(
-            "SELECT id, name, email FROM users WHERE id = $1",
+            "SELECT id, username, email FROM users WHERE id = $1",
             [jwt_payload.id]
         );
         const user = result.rows[0];
