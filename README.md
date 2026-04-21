@@ -23,6 +23,7 @@ I have been unable to connect to the database that has been being hosted, and ru
   
 NOTE: I seperated schemas for each table we need. Cleaner and easier to work with. Right now I just have the sql for the user table implemented, and I left schema.sql in tact because it's still valid to use as a base to build other tables from. If you want to add more tables to the db then create the appropriate schema and execute it as you would with the one below
 - docker exec -i recipeblog-db psql -U db_2026_cmp_6045b_002_ug02_user -d db_2026_cmp_6045b_002_ug02 < sql/generateUserTable.sql
+- docker exec -i recipeblog-db psql -U db_2026_cmp_6045b_002_ug02_user -d db_2026_cmp_6045b_002_ug02 < sql/generateRecipeTable.sql
 - docker exec -it recipeblog-db psql -U db_2026_cmp_6045b_002_ug02_user -d db_2026_cmp_6045b_002_ug02
 - From here, you can execute psql commands on the db e.g. \dt, \d users for the user table. \q to exit. 
 - npm run dev to start server using nodemon
@@ -32,6 +33,7 @@ NOTE: I seperated schemas for each table we need. Cleaner and easier to work wit
 
 TROUBLESHOOTING: if you run into any fixes for issues and fixes please put them here.
 - If password authentication fails for the database you are connected to then the port may already be in use, in which case change it in .yaml and .env
+- If it isn't running, check that you aren't being stupid like me (rho) and: leave the app folder, use npm start instead
 
 To Run:
 - Pull into new folder
@@ -54,4 +56,3 @@ STUFF TO CONSIDER:
 - Users can comment on recipes, like/dislike
 - "Trending" recipes will show on the main page
 - Users can buyset recipes from the site (?)
-
