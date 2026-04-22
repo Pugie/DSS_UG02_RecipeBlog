@@ -28,9 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const renderPosts = (recipes) => {
         // Remove previously displayed posts
         postList.querySelectorAll("article").forEach(article => article.remove());
+        // Remove No Recipes message
+        const messageToRemove = document.getElementById("bogusSearchMessage");
+        if (messageToRemove) {
+            messageToRemove.remove();
+        }
         
         if (!recipes || recipes.length === 0) {
             const msg = document.createElement("p");
+            msg.id = "bogusSearchMessage";
             msg.textContent = "No recipes found.";
             postList.appendChild(msg);
             return;
