@@ -41,7 +41,16 @@ exports.publishRecipe = async (req, res) => {
             `INSERT INTO recipes
             (author_id, title, slug, summary, content, image_url, subscriber_only)
             VALUES ($1, $2, $3, $4, $5, $6, $7)
-            RETURNING id, author_id, title, slug, summary, content, image_url, subscriber_only, created_at, updated_at`,
+            RETURNING id, 
+                author_id, 
+                title, 
+                slug, 
+                summary, 
+                content, 
+                image_url, 
+                subscriber_only, 
+                created_at, 
+                updated_at`,
             [
                 req.user.id,
                 title,
@@ -85,6 +94,61 @@ exports.editRecipe = async (req, res) => {
             content,
             image_url
         } = req.body;
+
+        let slug = slugify(title, {
+            lower: true,
+            strict: true,
+            trim: true
+        });
+    
+        // handler for duplicate slugs and grabbing ID of post being edited
+        let postID = await pool.query(
+            "SELECT id FROM recipes WHERE slug = $1",
+            [slug]
+        );
+
+        if (postID.rows.length > 0) {
+            slug = `${slug}-${Date.now()}`;
+            postID = await pool.query(
+                "SELECT id FROM recipes WHERE slug = $1",
+                [slug]
+            );
+        }
+
+        const result = await pool.query(
+            `UPDATE recipes
+            SET title = $1,
+                summary = $2,
+                content = $3,
+                image_url = $4,
+                slug = $5,
+            WHERE author_id = $6 AND id = $6
+            RETURNING id, 
+                author_id, 
+                title, 
+                slug, 
+                summary, 
+                content, 
+                image_url, 
+                subscriber_only, 
+                created_at, 
+                updated_at`
+            [
+                title,
+                summary,
+                content,
+                image_url,
+                slug,
+                req.user.id,
+                postID
+            ]
+        );
+
+        return res.status(201).json({
+            status: "success",
+            msg: "Recipe edited successfully.",
+            recipe: result.rows[0]
+        });
 
     } catch (error) {
         console.error(error);
