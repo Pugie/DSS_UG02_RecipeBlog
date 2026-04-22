@@ -21,6 +21,7 @@
   },
   "scripts": {
     "start": "node app/app.js",
-    "dev": "nodemon --watch app --ext js,mjs,cjs --ignore app/public/json/*.json app/app.js"
+    "dev": "nodemon --watch app --ext js,mjs,cjs --ignore app/public/json/*.json app/app.js",
+    "test" : "npx mocha"
   }
 }
