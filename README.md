@@ -24,10 +24,13 @@ TO RUN:
 
 TO DO NEXT:
 - rho has sql injection handled i found how to do it specifically with postgresql
+- i think the trending & index page is still reading from the json, so it should read from the database instead
+
 
 TROUBLESHOOTING: if you run into any fixes for issues and fixes please put them here.
 - If password authentication fails for the database you are connected to then the port may already be in use, in which case change it in .yaml and .env
 - If it isn't running, check that you aren't being stupid like me (rho) and: leave the app folder, use npm start instead
+- If it says "einuse" or something, go to the .env file and change the PORT. I (rho) use 3001
 
 RILEY DATABASE DOCKER:
 I have been unable to connect to the database that has been being hosted, and running psql on my pc was making me tear my hair out so I was running on a docker image instead. I've included the yaml file and here are the steps to get it running as I did (locally).
