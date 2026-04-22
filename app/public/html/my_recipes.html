@@ -30,27 +30,6 @@
         </nav>
 
         <main>
-            <section>
-                <h2>Share your culinary wisdom</h2>
-                <p>Give your fellow students some new ideas</p>
-
-                <form action="/makepost" method="post" id="postForm" name="postForm">
-                    <fieldset>
-                        <legend>Compose a Post</legend>
-                            <label for="title_field">Recipe Title:</label>
-                            <input id="title_field" name="title_field" type="text" placeholder="Title" required>
-
-                            <label for="content_field">Recipe Content:</label>
-                            <textarea id="content_field" name="content_field" placeholder="Write your method here.." required></textarea>
-                            <!-- <input id="content_field" name="content_field" type="text"> -->
-
-                            <input id="postId" name="postId" type="hidden">
-                            
-                            <button type="submit" id="post_button">Post</button>
-                    </fieldset>
-                </form>
-            </section>
-
             <section id="myPosts">
                 <h2>Your Recipes</h2>
                 <p>See all the recipes you've made so far.</p>
