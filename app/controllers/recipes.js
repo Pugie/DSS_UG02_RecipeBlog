@@ -199,6 +199,45 @@ exports.loadRecipe = async (req, res) => {
             errors: errors.array()
         });
     }
+    try {
+        const { slug } = req.params;
+
+        const result = await pool.query(
+            `SELECT r.id,
+                r.author_id,
+                r.title,
+                r.slug,
+                r.summary,
+                r.content,
+                r.image_url,
+                r.subscriber_only,
+                r.created_at,
+                r.updated_at,
+                u.username
+            FROM recipes r
+            JOIN users u on r.author_id = u.id
+            WHERE r.slug = $1`,
+            [slug]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                status: "error",
+                msg: "Recipe not found."
+            });
+        }
+
+        return res.status(200).json({
+            status: "success",
+            recipe: result.rows[0]
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            status: "error",
+            msg: "Internal server error."
+        });
+    }
 };
 
 exports.loadAllRecipes = async (req, res) => {
@@ -212,7 +251,6 @@ exports.loadAllRecipes = async (req, res) => {
         });
     }
     try { 
-        // 
         const limit = Math.min(parseInt(req.query.limit, 10) || 10, 50);
         const offset = parseInt(req.query.offset, 10) || 0;
         const search = req.query.q?.trim() || "";

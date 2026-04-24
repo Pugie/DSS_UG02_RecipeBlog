@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const img = document.createElement("img");
             img.src = recipe.image_url || "../imgs/default.jpg";
+            img.alt = recipe.title || "What should be a recipe.";
             fig.appendChild(img);
 
             const figcap = document.createElement("figcaption");
