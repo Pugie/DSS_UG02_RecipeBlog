@@ -23,8 +23,9 @@ TO RUN:
 - sign up and login with whatever details you want
 
 TO DO NEXT:
-- rho has sql injection handled i found how to do it specifically with postgresql
+- time to figure out mocha and chai with node
 - i think the trending & index page is still reading from the json, so it should read from the database instead
+- remove full name from user table, because otherwise we can't make users (current logic doesn't provide full name, triggering a null-constraint error)
 
 
 TROUBLESHOOTING: if you run into any fixes for issues and fixes please put them here.

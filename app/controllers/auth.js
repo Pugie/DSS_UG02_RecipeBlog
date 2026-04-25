@@ -9,6 +9,8 @@ require("dotenv").config();
 exports.register = async (req, res) => {
     const errors = validationResult(req);
 
+    console.log(req);
+
     // Return any validation errors
     if (!errors.isEmpty()) {
         return res.status(400).json({
@@ -19,6 +21,7 @@ exports.register = async (req, res) => {
     }
     try {
         const { username, email, password } = req.body;
+        console.log(password);
 
         // Does this user's email exist already?
         const existingUser = await pool.query(
@@ -36,8 +39,8 @@ exports.register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 12);
         // Add new user into the table.
         const newUserResult = await pool.query(
-        `INSERT INTO users (username, email, password_hash)
-        VALUES ($1, $2, $3)
+        `INSERT INTO users (full_name, username, email, password_hash)
+        VALUES ($1, $1, $2, $3)
         RETURNING id, username, email`,
         [username, email, hashedPassword]
         );
