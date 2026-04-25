@@ -381,5 +381,42 @@ exports.loadMyRecipes = async (req, res) => {
 };
 
 exports.deleteRecipe = async (req, res) => {
+    const errors = validationResult(req);
 
-}
+    if(!errors.isEmpty()) {
+        return res.status(400).json({
+            status: "error",
+            msg: "Validation error", 
+            errors: errors.array()
+        });
+    }
+
+    try {
+        const slug = req.params.slug;
+
+        const result = await pool.query(
+            `DELETE FROM recipes
+            WHERE slug = $1 AND author_id = $2
+            RETURNING id, title, slug`,
+            [slug, req.user.id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                status: "error",
+                msg: "Recipe not found or insufficient permissions."
+            });
+        }
+        return res.status(200).json({
+            status: "success",
+            msg: "Recipe successfully deleted.",
+            recipe: result.rows[0]
+        });
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            status: "error",
+            msg: "Internal server error."
+        });
+    }
+};

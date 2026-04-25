@@ -52,6 +52,53 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    const deleteRecipe = async (slug) => {
+        const confirmation = confirm("Are you sure you want to delete this recipe. Such an act cannot be undone.");
+
+        if (!confirmation) {
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+            window.location.href = "../html/login.html";
+            return;
+        }
+
+        const response = await fetch(`/api/recipes/${encodeURIComponent(slug)}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (response.status === 401 || response.status === 403) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userName");
+            localStorage.removeItem("userEmail");
+            window.location.href = "../html/login.html";
+            return;
+        }
+        
+        const data = await response.json();
+
+        if(!response.ok) {
+            alert(data.msg || "Unable to delete recipe.");
+            return;
+        }
+
+        alert("Recipe deleted successfully.")
+
+        loadPosts(searchInput.value.trim(), currentPage);
+
+        } catch (error) {
+            console.error(error);
+            alert("Something went wrong.")
+        }
+    }
+
     const renderPosts = (recipes) => {
         // Remove previously displayed posts
         postsList.querySelectorAll("article").forEach(article => article.remove());
@@ -114,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const deleteButton = document.createElement("button");
             deleteButton.textContent = "Delete recipe";
             deleteButton.addEventListener("click", () => {
-                window.location.href = `deleterecipe.html?slug=${encodeURIComponent(recipe.slug)}`
+                deleteRecipe(recipe.slug)
             });
             figcap.appendChild(deleteButton);
 
