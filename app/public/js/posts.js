@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `/api/recipes?q=${encodeURIComponent(search)}&limit=${limit}&offset=${offset}`
             );
 
+
             const data = await response.json();
 
             if (!response.ok) {
@@ -104,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
             clearTimeout(searchTimeout);
 
             searchTimeout = setTimeout(() => {
+                currentPage = 1;
                 loadPosts(searchValue, currentPage);
             }, 500);
         });

@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="../js/my_posts.js" defer></script>
+        <script src="../js/my_recipes.js" defer></script>
         <script src="../js/main.js" defer></script>
     </head>
     <body>
@@ -30,33 +30,17 @@
         </nav>
 
         <main>
-            <section>
-                <h2>Share your culinary wisdom</h2>
-                <p>Give your fellow students some new ideas</p>
-
-                <form action="/makepost" method="post" id="postForm" name="postForm">
-                    <fieldset>
-                        <legend>Compose a Post</legend>
-                            <label for="title_field">Recipe Title:</label>
-                            <input id="title_field" name="title_field" type="text" placeholder="Title" required>
-
-                            <label for="content_field">Recipe Content:</label>
-                            <textarea id="content_field" name="content_field" placeholder="Write your method here.." required></textarea>
-                            <!-- <input id="content_field" name="content_field" type="text"> -->
-
-                            <input id="postId" name="postId" type="hidden">
-                            
-                            <button type="submit" id="post_button">Post</button>
-                    </fieldset>
-                </form>
-            </section>
-
-            <section id="myPosts">
+            <section id="postsList">
                 <h2>Your Recipes</h2>
                 <p>See all the recipes you've made so far.</p>
 
                 <i class="fa fa-search" aria-hidden="true"></i>
-                <input class="search_bar" id="search" name="search" type="text" placeholder="Search your recipes...">
+                <input class="search_bar" id="search" name="search" type="text" placeholder="Search recipes...">
+                <div id="pageController">
+                    <button id="prevPage">Previous</button>
+                    <span id="pageNumber">Page 1</span>
+                    <button id="nextPage">Next</button>
+                </div>
             </section>
         </main>
     </body>

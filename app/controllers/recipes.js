@@ -307,9 +307,78 @@ exports.loadAllRecipes = async (req, res) => {
 
 exports.loadMyRecipes = async (req, res) => {
     try {
-        const limit = 
+        const limit = Math.min(parseInt(req.query.limit, 10) || 10, 50);
+        const offset = parseInt(req.query.offset, 10) || 0;
+        const search = req.query.q?.trim() || "";
+        const queryLimiter = limit + 1; 
+        let result;
+
+        if (search) {
+            result = await pool.query(
+                `SELECT r.id,
+                    r.author_id,
+                    r.title,
+                    r.slug,
+                    r.summary,
+                    r.image_url,
+                    r.subscriber_only,
+                    r.created_at,
+                    r.updated_at,
+                    u.username
+                FROM recipes r
+                JOIN users u ON r.author_id = u.id
+                WHERE r.author_id = $1
+                AND (
+                    r.title ILIKE $2
+                    OR r.summary ILIKE $2
+                    OR r.content ILIKE $2
+                )
+                ORDER BY r.created_at DESC
+                LIMIT $3 OFFSET $4`,
+                [req.user.id, `%${search}%`, queryLimiter, offset]
+            );
+        } else {
+            result = await pool.query(
+                `SELECT r.id,
+                    r.author_id,
+                    r.title,
+                    r.slug,
+                    r.summary,
+                    r.image_url,
+                    r.subscriber_only,
+                    r.created_at,
+                    r.updated_at,
+                    u.username
+                FROM recipes r
+                JOIN users u on r.author_id = u.id
+                WHERE r.author_ID = $1
+                ORDER BY r.created_at DESC
+                LIMIT $2 OFFSET $3`,
+                [req.user.id, queryLimiter, offset]
+            );
+        }
+
+        const hasNextPage = result.rows.length > limit;
+        if (hasNextPage) {
+            result.rows.pop();
+        }
+        return res.status(200).json({
+            status: "success",
+            count: result.rows.length,
+            limit,
+            offset,
+            hasNextPage,
+            recipes: result.rows
+        });
+
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            status: "error",
+            msg: "Internal server error."
+        });
     }
-})
+};
 
 exports.deleteRecipe = async (req, res) => {
 
