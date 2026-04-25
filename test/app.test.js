@@ -1,4 +1,4 @@
-
+const assert = require('assert');
 
 const authController = require('../app/controllers/auth');
 const register = authController.register;
@@ -10,7 +10,12 @@ var username = "";
 var password = "password1234";
 var email = "johndoe@yellowking.com"
 
-const request = ({
+
+
+describe("Testing User Sign Up", function (){
+
+    it("blank fields should return error code 422", function(){
+        const testdata = {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -20,16 +25,15 @@ const request = ({
                     email,
                     password
                 })
-            });
+            };
 
-describe("Testing User Sign Up", function (){
+        var res = register(testdata);
+        assert.strictEqual(res, 422);
 
-    it("blank fields should return error code 400", function(){
-        
-        var response = register(request)
-        if (response.status == 400){
-            console.log("Error code 400");
-        }
     });
+
+    it("if the user exists, it should return error code 409", function(){
+
+    })
 
 });

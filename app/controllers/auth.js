@@ -9,7 +9,7 @@ require("dotenv").config();
 exports.register = async (req, res) => {
     const errors = validationResult(req);
 
-    console.log(req);
+    console.log(req.body);
 
     // Return any validation errors
     if (!errors.isEmpty()) {
@@ -20,8 +20,15 @@ exports.register = async (req, res) => {
         });
     }
     try {
-        const { username, email, password } = req.body;
-        console.log(password);
+        const { username, email, password } = JSON.parse(req.body);
+        console.log("Password from auth.js: " + password);
+
+        if (username == "" || email == "" || password == ""){ //don't allow empty values
+            return res.status(422).json({
+                status: "error",
+                msg : "Missing information" //but be vague as to which values are empty
+            }) //this is mostly because my unit tests bypass the html enforcements
+        }
 
         // Does this user's email exist already?
         const existingUser = await pool.query(
