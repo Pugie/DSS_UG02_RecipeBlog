@@ -34,6 +34,7 @@ router.post("/recipes", validateRecipe, authenticateJWT, publishRecipe);
 router.put("/recipes/:slug", validateRecipe, authenticateJWT, editRecipe);
 router.delete("/recipes/:slug", authenticateJWT, deleteRecipe);
 router.get("/recipes", loadAllRecipes);
+router.get("recipes/my-recipes", authenticateJWT, loadMyRecipes);
 router.get("/recipes/:slug", loadRecipe);
 
 module.exports = router;

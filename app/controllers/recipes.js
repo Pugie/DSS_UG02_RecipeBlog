@@ -190,15 +190,6 @@ exports.editRecipe = async (req, res) => {
 };
 
 exports.loadRecipe = async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        return res.status(400).json({
-            status: "error",
-            msg: "Validation error",
-            errors: errors.array()
-        });
-    }
     try {
         const { slug } = req.params;
 
@@ -241,15 +232,6 @@ exports.loadRecipe = async (req, res) => {
 };
 
 exports.loadAllRecipes = async (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        return res.status(400).json({
-            status: "error",
-            msg: "Validation error",
-            errors: errors.array()
-        });
-    }
     try { 
         const limit = Math.min(parseInt(req.query.limit, 10) || 10, 50);
         const offset = parseInt(req.query.offset, 10) || 0;
@@ -322,6 +304,12 @@ exports.loadAllRecipes = async (req, res) => {
         });
     }
 };
+
+exports.loadMyRecipes = async (req, res) => {
+    try {
+        const limit = 
+    }
+})
 
 exports.deleteRecipe = async (req, res) => {
 
