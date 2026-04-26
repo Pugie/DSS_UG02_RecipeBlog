@@ -1,60 +1,102 @@
-// Function to add the latest 2 posts to the home page
-async function loadLatestPosts() {
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("search");
+    const postList = document.getElementById("postsList");
 
-    // Load posts data
-    const post_response = await fetch("../json/posts.json");
-    const post_data = await post_response.json();
-    // Remove current posts from page
-    let postList = document.getElementById('postsList');
+    let currentPage = 1;
+    const limit = 2;
 
-    for(let i = 0; i < postList.children.length; i++) {
-        if(postList.children[i].nodeName == "article") {
-            postList.removeChild(postList.children[i]);
+    // Stops server from being overloaded each time a keypress is made during a search
+    let searchTimeout = null;
+
+    const loadPosts = async (search = "", page = 1) => {
+        try {
+            const offset = (page - 1) * limit;
+            const response = await fetch(
+                `/api/recipes?q=${encodeURIComponent(search)}&limit=${limit}&offset=${offset}`
+            );
+
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                console.error(data.msg || "Failed to load the recipes.");
+                return;
+            }
+
+            renderPosts(data.recipes);
+
+        } catch (error) {
+            console.error("Error loading posts:", error);
         }
     }
 
-    // Load latest 2 posts
-    for(let i = post_data.length - 1; i > post_data.length - 3; i--) {
-        let author = post_data[i].username;
-        let timestamp = post_data[i].timestamp;
-        let title = post_data[i].title;
-        let content = post_data[i].content;
-        let postId = post_data[i].postId;
-
-        let postContainer = document.createElement('article');
-        postContainer.classList.add("post");
-        let fig = document.createElement('figure');
-        postContainer.appendChild(fig);
-
-        let postIdContainer = document.createElement("p");
-        postIdContainer.textContent = postId;
-        postIdContainer.hidden = true;
-        postId.id = "postId";
-        postContainer.appendChild(postIdContainer);
-
-        let img = document.createElement('img');
-        let figcap = document.createElement('figcaption');
-        fig.appendChild(img);
-        fig.appendChild(figcap);
+    const renderPosts = (recipes) => {
+        // Remove previously displayed posts
+        postList.querySelectorAll("article").forEach(article => article.remove());
+        // Remove No Recipes message
+        const messageToRemove = document.getElementById("bogusSearchMessage");
+        if (messageToRemove) {
+            messageToRemove.remove();
+        }
         
-        let titleContainer = document.createElement('h3');
-        titleContainer.textContent = title;
-        figcap.appendChild(titleContainer);
-        
-        let usernameContainer = document.createElement('h5');
-        usernameContainer.textContent = author;
-        figcap.appendChild(usernameContainer);
+        if (!recipes || recipes.length === 0) {
+            const msg = document.createElement("p");
+            msg.id = "bogusSearchMessage";
+            msg.textContent = "No recipes found.";
+            postList.appendChild(msg);
+            return;
+        }
+        recipes.forEach(recipe => {
+            const article = document.createElement("article");
+            article.classList.add("post");
 
-        let timeContainer = document.createElement('h5');
-        timeContainer.textContent = timestamp;
-        figcap.appendChild(timeContainer);
+            const fig = document.createElement("figure");
+            article.appendChild(fig);
 
-        let contentContainer = document.createElement('p');
-        contentContainer.textContent = content;
-        figcap.appendChild(contentContainer);
+            const figcap = document.createElement("figcaption");
+            fig.appendChild(figcap);
 
-        postList.insertBefore(postContainer, postList.querySelectorAll("section > p")[1]);
+            const title = document.createElement("h3");
+            title.textContent = recipe.title + " (TRENDING)";
+            figcap.appendChild(title);
+
+            const username = document.createElement("h5");
+            username.textContent = recipe.username;
+            figcap.appendChild(username);
+
+            const time = document.createElement("h5");
+            time.textContent = new Date(recipe.created_at).toLocaleString();
+            figcap.appendChild(time);
+
+            const summary = document.createElement("p");
+            summary.textContent = recipe.summary || "";
+            figcap.appendChild(summary);
+
+            const button = document.createElement("button");
+            button.textContent = "View Full Recipe";
+            button.addEventListener("click", () => {
+                window.location.href = `fullrecipe.html?slug=${encodeURIComponent(recipe.slug)}`
+            });
+            figcap.appendChild(button);
+
+            postList.appendChild(article);
+        });
     }
-}
+    // Search logic
+    if (searchInput) {
+        searchInput.addEventListener("input", (evt) => {
+            const searchValue = evt.target.value.trim();
 
-loadLatestPosts();
+            clearTimeout(searchTimeout);
+
+            searchTimeout = setTimeout(() => {
+                
+                loadPosts(searchValue, currentPage);
+            }, 500);
+        });
+    }
+
+
+    // Load posts for the first time
+    loadPosts("", currentPage);
+});
